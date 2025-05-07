@@ -17,8 +17,6 @@ const io = new Server(server, {
 const users = {};
 
 io.on('connection', socket => {
-  console.log('🔌 مستخدم متصل:', socket.id);
-
   socket.on('join-room', roomId => {
     socket.join(roomId);
     users[socket.id] = roomId;
@@ -46,5 +44,5 @@ io.on('connection', socket => {
 
 const PORT = process.env.PORT || 10000;
 server.listen(PORT, () => {
-  console.log(`🚀 السيرفر يعمل على المنفذ ${PORT}`);
+  console.log(`Server is running on port ${PORT}`);
 });
