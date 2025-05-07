@@ -1,23 +1,25 @@
 const express = require('express');
 const http = require('http');
-const { Server } = require('socket.io');
 const cors = require('cors');
+const { Server } = require('socket.io');
 
 const app = express();
 app.use(cors());
+
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
     origin: '*',
+    methods: ['GET', 'POST']
   }
 });
 
 const users = {};
 
-io.on('connection', (socket) => {
+io.on('connection', socket => {
   console.log('🔌 مستخدم متصل:', socket.id);
 
-  socket.on('join-room', (roomId) => {
+  socket.on('join-room', roomId => {
     socket.join(roomId);
     users[socket.id] = roomId;
     socket.to(roomId).emit('user-connected', socket.id);
@@ -42,7 +44,7 @@ io.on('connection', (socket) => {
   });
 });
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 10000;
 server.listen(PORT, () => {
   console.log(`🚀 السيرفر يعمل على المنفذ ${PORT}`);
 });
